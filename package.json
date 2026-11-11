@@ -1,0 +1,18 @@
+{
+  "name": "quiz-exam",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Тест по технической защите информации: 180 вопросов и закрытая панель результатов",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "dev": "node --watch --env-file-if-exists=.env server/index.js",
+    "test": "node --test test/api.test.js",
+    "test:browser": "node test/browser.mjs",
+    "import:questions": "node scripts/import-questions.js",
+    "check": "node --check server/app.js && node --check server/index.js && node --check public/app.js && node --check public/admin.js && node scripts/validate-data.js"
+  },
+  "dependencies": { "express": "^5.1.0", "express-rate-limit": "^8.1.0", "helmet": "^8.1.0" },
+  "devDependencies": { "playwright": "^1.56.0" }
+}

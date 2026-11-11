@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#2458db"><title>Техническая защита информации · Тест</title><link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script></head>
+<body>
+  <header class="site-header"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">ТЗ</span><span>Тестирование<span class="brand-sub">Техническая защита информации</span></span></a><a class="header-link" href="/admin">Администратору <span aria-hidden="true">→</span></a></header>
+  <main class="page">
+    <div class="page-kicker">УЧЕБНАЯ ПЛАТФОРМА <span> / </span> ПРОВЕРКА ЗНАНИЙ</div>
+    <div id="global-error" class="notice error" role="alert" hidden></div>
+    <div id="storage-warning" class="notice" role="status" hidden>Браузер не разрешает сохранять ответы. Не закрывайте эту вкладку до отправки теста.</div>
+    <section id="loading" class="card loading" aria-live="polite">Загружаем вопросы…</section>
+    <section id="welcome" hidden>
+      <div class="intro"><span class="eyebrow">ПРОВЕРЬТЕ СВОИ ЗНАНИЯ</span><h1>Техническая защита<br>информации</h1><p>От основ безопасности до настройки технических средств.<br class="desktop-only"> Пройдите тест и отправьте ответы преподавателю.</p></div>
+      <div class="welcome-grid">
+        <div class="card start-card"><div class="card-heading"><span class="step-dot">01</span><div><h2>Давайте познакомимся</h2><p>Укажите данные, чтобы преподаватель нашёл ваш результат.</p></div></div>
+          <form id="start-form"><label for="name">Имя и фамилия <span class="required">*</span></label><input id="name" name="name" autocomplete="name" placeholder="Например, Анна Иванова" minlength="3" maxlength="120" required><label for="group">Группа или класс <span class="optional">необязательно</span></label><input id="group" name="group" autocomplete="off" placeholder="Например, ИБ-21" maxlength="80"><button id="start-button" class="button primary wide" type="submit">Начать тест <span aria-hidden="true">→</span></button><p class="form-note">Ваше имя и ответы будут доступны только администратору.</p></form>
+        </div>
+        <aside class="card info-card"><span class="eyebrow">О ТЕСТЕ</span><div class="big-number">180 <span>вопросов</span></div><p>Один ответ из четырёх.<br>Без ограничения по времени.</p><hr><ul class="check-list"><li>Возвращайтесь к любому вопросу и меняйте ответ</li><li>Прогресс сохраняется в этом браузере</li><li>Ответы проверяются после отправки</li></ul><div class="quiet-note"><span aria-hidden="true">ⓘ</span> Результат увидит преподаватель. Правильные ответы во время теста не показываются.</div></aside>
+      </div>
+    </section>
+    <section id="quiz" hidden>
+      <div class="section-title"><div><span class="eyebrow">ТЕХНИЧЕСКАЯ ЗАЩИТА ИНФОРМАЦИИ</span><h1 class="compact-title">Ваш тест</h1></div><span id="participant" class="participant"></span></div>
+      <div class="test-layout"><div class="card question-card"><div class="question-top"><span id="question-counter" class="counter"></span><span id="answered-count" class="muted"></span></div><progress id="progress" max="180" value="0" aria-label="Количество отвеченных вопросов"></progress><fieldset id="question-fieldset"><legend id="question-text" tabindex="-1"></legend><p class="select-hint">Выберите один вариант ответа</p><div id="options" class="options"></div></fieldset><button id="clear-answer" class="text-button" type="button">Снять выбор</button><div class="question-footer"><button id="previous" class="button secondary" type="button">← Назад</button><span class="save-status">Сохранено в браузере</span><button id="next" class="button primary" type="button">Далее →</button></div></div>
+      <aside class="card navigation-card"><h2>Вопросы теста</h2><p class="muted">Можно переходить в любом порядке.</p><div class="map-legend"><span><i class="answered-swatch"></i> Есть ответ</span><span><i></i> Без ответа</span></div><div id="question-map" class="question-map"></div><button id="open-review" class="button secondary wide" type="button">Перейти к отправке</button></aside></div>
+    </section>
+    <section id="review" class="card review-card" hidden><span class="review-icon" aria-hidden="true">✓</span><span class="eyebrow">ПЕРЕД ОТПРАВКОЙ</span><h1 class="compact-title">Проверьте готовность</h1><p id="review-summary" class="review-summary"></p><div id="skip-warning" class="notice" hidden></div><p class="muted">После отправки изменить ответы будет нельзя. Вы можете вернуться к вопросам и проверить свой выбор.</p><div class="review-actions"><button id="back-to-test" class="button secondary" type="button">Вернуться к тесту</button><button id="finish" class="button primary" type="button">Завершить тест</button></div><button id="first-skipped" class="text-button" type="button">Перейти к первому пропущенному вопросу</button></section>
+    <section id="success" class="card success-card" hidden><span class="success-icon" aria-hidden="true">✓</span><span class="eyebrow">ГОТОВО</span><h1 class="compact-title">Тест завершён.</h1><p>Ответы успешно отправлены.</p><p class="muted">Спасибо за работу. Теперь эту страницу можно закрыть.</p><button id="new-test" class="button secondary" type="button">На главную</button></section>
+  </main>
+  <footer class="site-footer"><span>Техническая защита информации</span><span>Учебное тестирование · 180 вопросов</span></footer>
+  <dialog id="confirm-dialog"><form method="dialog"><span class="eyebrow">ПОДТВЕРЖДЕНИЕ</span><h2>Отправить ответы?</h2><p>После отправки изменить работу будет нельзя.</p><p id="confirm-error" class="notice error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-submit" class="button secondary" value="cancel" autofocus>Продолжить проверку</button><button id="confirm-submit" class="button primary" type="button">Да, отправить</button></div></form></dialog>
+</body></html>
