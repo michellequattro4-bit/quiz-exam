@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Тест по технической защите информации: 180 вопросов и закрытая панель результатов",
+  "description": "Тест по технической защите информации: 40 случайных вопросов из 180 и закрытая панель результатов",
   "engines": { "node": ">=24.0.0" },
   "scripts": {
     "start": "node --env-file-if-exists=.env server/index.js",

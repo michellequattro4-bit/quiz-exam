@@ -6,7 +6,7 @@ import { randomBytes, randomUUID, createHash, timingSafeEqual } from 'node:crypt
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { questions, answerKey, version } from './questions.js';
+import { answerKey, version, attemptSize, selectQuestions } from './questions.js';
 
 const hash = value => createHash('sha256').update(value).digest();
 const safeEqual = (a, b) => timingSafeEqual(hash(a), hash(b));
@@ -63,7 +63,7 @@ export function createApp({ adminPassword, databasePath = './data/quiz.sqlite', 
     }
     next();
   };
-  app.get('/api/questions', (req, res) => res.json({ version, total: questions.length, questions }));
+  app.get('/api/questions', (req, res) => res.json({ version, total: attemptSize }));
   app.post('/api/attempts', (req, res) => {
     const { name, group = '', version: clientVersion } = req.body ?? {};
     if (typeof name !== 'string' || name.trim().length < 3 || name.trim().length > 120 || name.trim().split(/\s+/).length < 2 || /[\x00-\x1f]/.test(name)) throw bad('Укажите имя и фамилию (до 120 символов).');
@@ -72,10 +72,10 @@ export function createApp({ adminPassword, databasePath = './data/quiz.sqlite', 
     const attemptId = randomUUID();
     const token = randomBytes(32).toString('hex');
     const startedAt = new Date().toISOString();
-    const snapshot = questions.map(q => ({ ...q, correctOption: answerKey[q.id] }));
+    const snapshot = selectQuestions().map(q => ({ ...q, correctOption: answerKey[q.id] }));
     db.prepare('INSERT INTO attempts (public_id, token_hash, name, group_name, started_at, snapshot_json, version) VALUES (?, ?, ?, ?, ?, ?, ?)')
       .run(attemptId, hash(token).toString('hex'), name.trim(), group.trim(), startedAt, JSON.stringify(snapshot), version);
-    res.status(201).json({ attemptId, token, startedAt });
+    res.status(201).json({ attemptId, token, startedAt, version, questions: snapshot.map(({ correctOption, ...q }) => q) });
   });
   function attemptFor(req) {
     const { attemptId, token } = req.body ?? {};

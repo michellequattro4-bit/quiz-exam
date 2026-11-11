@@ -38,11 +38,11 @@ async function showDetail(id) {
   const a = data.attempt;
   $('detail-summary').textContent = `Правильно: ${a.correct} · Неправильно: ${a.incorrect} · Пропущено: ${a.skipped} · Результат: ${a.percentage}%`;
   $('detail-questions').replaceChildren();
-  data.questions.forEach(q => {
+  data.questions.forEach((q, index) => {
     const card = document.createElement('article'); card.className = 'card detail-question';
     const labels = { correct: 'Правильно', incorrect: 'Неправильно', skipped: 'Пропущено' };
     const status = node('span', labels[q.result], 'badge ' + q.result);
-    const title = node('h2', `${q.id}. ${q.text}`);
+    const title = node('h2', `${index + 1} из ${data.questions.length}. ${q.text}`);
     const chosen = q.options.find(o => o.id === q.selectedOption), correct = q.options.find(o => o.id === q.correctOption);
     const answer = node('p', 'Ответ участника: ' + (chosen ? `${chosen.id}. ${chosen.text}` : 'Не выбран'));
     const key = node('p', `Правильный ответ: ${correct.id}. ${correct.text}`, 'correct-answer');

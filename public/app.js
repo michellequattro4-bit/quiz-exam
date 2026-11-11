@@ -24,9 +24,9 @@ function renderMap() {
   $('question-map').replaceChildren();
   questions.forEach((q, i) => {
     const button = document.createElement('button');
-    button.type = 'button'; button.textContent = q.id;
+    button.type = 'button'; button.textContent = i + 1;
     button.className = 'map-button' + (draft.answers[q.id] ? ' answered' : '') + (draft.index === i ? ' current' : '');
-    button.setAttribute('aria-label', `Вопрос ${q.id}${draft.answers[q.id] ? ', ответ выбран' : ', без ответа'}`);
+    button.setAttribute('aria-label', `Вопрос ${i + 1}${draft.answers[q.id] ? ', ответ выбран' : ', без ответа'}`);
     if (draft.index === i) button.setAttribute('aria-current', 'step');
     button.onclick = () => go(i);
     $('question-map').append(button);
@@ -69,7 +69,8 @@ $('start-form').onsubmit = async event => {
   try {
     const name = $('name').value.trim(), group = $('group').value.trim();
     const attempt = await api('/api/attempts', { name, group, version });
-    draft = { ...attempt, name, group, answers: {}, index: 0, version }; save(); renderQuestion(true);
+    questions = attempt.questions;
+    draft = { attemptId: attempt.attemptId, token: attempt.token, startedAt: attempt.startedAt, name, group, answers: {}, index: 0, version: attempt.version }; save(); renderQuestion(true);
   } catch (e) { error(e.message); }
   finally { button.disabled = false; button.textContent = 'Начать тест →'; }
 };
@@ -94,7 +95,7 @@ $('new-test').onclick = () => location.reload();
 window.addEventListener('beforeunload', event => { if (draft) { event.preventDefault(); event.returnValue = ''; } });
 async function init() {
   try {
-    const data = await api('/api/questions'); questions = data.questions; version = data.version;
+    const data = await api('/api/questions'); version = data.version;
     try { draft = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch { removeDraft(); }
     if (draft && typeof draft.attemptId === 'string' && typeof draft.token === 'string' && draft.answers && typeof draft.answers === 'object' && !Array.isArray(draft.answers)) {
       const resumed = await api('/api/attempts/resume', { attemptId: draft.attemptId, token: draft.token });
